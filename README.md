@@ -1,74 +1,114 @@
-# Next.js 15.2 Starter Template
+# 💖 CherishX AI - Your Personal Relationship Advisor
 
-<p align='center'>
-<a href="https://starter-website-sigma.vercel.app/">Live Demo</a>
-</p>
+![CherishX AI](public/icon-256x256.png)
 
-## Features ✨
+## 🌟 Overview
 
-- ⚡️ [Next 15.2](https://nextjs.org/docs) - with app router
-- 🦾 [TypeScript](https://www.typescriptlang.org/), of course
-- 🎨 [Tailwindcss](https://tailwindcss.com/) - next generation utility-first CSS
-- 💡 [Eslint](https://eslint.org/) - with Airbnb config
-- 💖 [Prettier](https://prettier.io/) - configured with Eslint and with Tailwindcss-prettier support
-- 🐶 [Husky](https://typicode.github.io/husky/) - Improves your commits and more woof!
-- 🌚 [Dark Mode](https://tailwindcss.com/docs/dark-mode)
-- 🪢 [CSS Modules](https://github.com/css-modules/css-modules)
-- 🗂 [cz-git](https://cz-git.qbb.sh/) - Git commit CLI with custom config
-- 🚀 [PWA](https://web.dev/progressive-web-apps/) - Native app experience
-- 💣 [pnpm](https://pnpm.io/ "Make sure to install pnpm globally before installing this template => npm i -g pnpm") - Fast, disk space efficient package manager
-- ☁️ Deploy on [Vercel](https://vercel.com/), One click to deploy, Inbuilt Analytics support
+CherishX AI is a modern, AI-powered relationship advisor application built with Next.js, TypeScript, and Clerk authentication. It provides personalized guidance and solutions for relationship challenges through private, secure conversations.
 
-## Try it now 💫
+## ✨ Features
 
-### Clone to local
+- 🔒 **Secure Authentication** - User authentication powered by Clerk
+- 💬 **AI Chat Interface** - Personalized relationship advice through conversational AI
+- 🎨 **Modern UI** - Beautiful, responsive design with Tailwind CSS
+- 📱 **Mobile Friendly** - Optimized for all device sizes
+- 🌓 **Dark Mode Support** - Comfortable viewing experience in any lighting condition
+- ⚡ **Fast Performance** - Built with Next.js for optimal performance
 
-```bash
-  npx @bhanu17/nextjs-starter my-app
-```
+## 🚀 Getting Started
 
- Make sure to replace **my-app** with your desired name
+### Prerequisites
 
-### GitHub Template <img src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg" height=20 width=20 />
+- Node.js 18.x or later
+- pnpm package manager
 
-[Create a repo from this template on GitHub](https://github.com/Bhanu1776/Nextjs15-Starter-Template/generate).
+### Installation
 
-## Checklist ✅
-
-Try to follow the checklist when using this template to properly update your information.
-
-- [ ] Rename *name* and *author* fields in `package.json`
-- [ ] Change the author name in `LICENSE`
-- [ ] Change the title and description in `layout.tsx`
-- [ ] Modify the manifest in `public`
-- [ ] Clean up the `README.md`
-
-## Development 🧑‍💻
+1. Clone the repository
 
 ```bash
-  pnpm dev
+git clone https://github.com/your-username/cherishx-ai.git
+cd cherishx-ai
 ```
 
-Then visit <http://localhost:3000>
+2. Install dependencies
 
-## Deploy on Vercel ☁️
+```bash
+pnpm install
+```
 
-This template comes with vercel inbuilt. Your app will be live in a minute by typing **`vercel`** in terminal.  
-For more information go through [Vercel CLI](https://vercel.com/docs/cli).
+3. Set up environment variables
 
-## Why ⁉️
+```bash
+cp .env.example .env.local
+```
 
-Recently, I've made a lot of NextJs webs. And setting up each time from scratch with all configurations is really time consuming.
+Edit `.env.local` and add your Clerk API keys and other environment variables.
 
-Therefore, I created this template for myself to make creating apps easier, along with some useful tips I've picked up from creating those apps. You are welcome to make changes or even maintain your own forks.
+4. Start the development server
 
-## Support Me 🫂
+```bash
+pnpm dev
+```
 
-<a href="https://www.buymeacoffee.com/Bhanu1776"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a>
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-<hr>
+## 🏛️ Project Structure
 
-© 2025 Bhanu Sunka  
-This project is licensed under the [**MIT license**](https://github.com/Bhanu1776/Nextjs15-Starter-Template/blob/master/LICENSE).
+```
+src/
+├── ai/               # AI providers and tools
+├── app/              # Next.js App Router pages
+├── components/       # React components
+│   ├── magicui/      # Animation components
+│   └── ui/           # UI components
+├── hooks/            # Custom React hooks
+└── lib/              # Utility functions
+```
 
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+## 🔧 Technologies Used
+
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
+- **Authentication**: Clerk
+- **AI Integration**: OpenAI API
+- **State Management**: React Context API
+- **Animations**: Custom MagicUI components
+
+## 📱 Progressive Web App
+
+CherishX AI is configured as a Progressive Web App, allowing users to install it on their devices for a native-like experience. The app includes:
+
+- Service Worker for offline capabilities
+- Web App Manifest for installation
+- Optimized icons for various device sizes
+
+## 🛠️ Development
+
+### Commands
+
+- `pnpm dev` - Start the development server
+- `pnpm build` - Build the production application
+- `pnpm start` - Start the production server
+- `pnpm lint` - Run ESLint to check code quality
+
+## 📚 Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Clerk Documentation](https://clerk.com/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+
+## 🔐 Privacy & Security
+
+CherishX AI prioritizes user privacy and data security:
+
+- All conversations are private and encrypted
+- No conversation data is stored long-term without consent
+- Authentication handled by Clerk's secure infrastructure
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Made with ❤️ by CherishX Team
