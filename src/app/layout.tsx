@@ -1,8 +1,12 @@
 import { Analytics } from "@vercel/analytics/react";
 import classNames from "classnames";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+
+export const viewport: Viewport = {
+  themeColor: "#a855f7", // Matches your manifest's purple theme
+};
 
 export const metadata: Metadata = {
   title: "CherishX | Your AI Love Partner",
@@ -41,7 +45,6 @@ export const metadata: Metadata = {
     description: "Your empathetic digital companion. ❤️",
     images: ["https://cherishx.app/twitter-card.png"], // Custom Twitter card image
   },
-  themeColor: "#a855f7", // Matches your manifest's purple theme
 };
 
 export default function RootLayout({
@@ -55,7 +58,8 @@ export default function RootLayout({
         <head>
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/icon.png" />
-          <meta name="theme-color" content="#e0c8fd" />
+          {/* Removing this as it's now handled by the viewport export */}
+          {/* <meta name="theme-color" content="#e0c8fd" /> */}
 
           <meta property="og:title" content="Nextjs App" />
           <meta name="twitter:title" content="Nextjs App" />
