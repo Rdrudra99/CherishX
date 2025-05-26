@@ -1,7 +1,6 @@
 import { modelID } from "@/ai/providers";
 import { Textarea as ShadcnTextarea } from "@/components/ui/textarea";
 import { ArrowUp } from "lucide-react";
-import { ModelPicker } from "./model-picker";
 
 interface InputProps {
   input: string;
@@ -42,10 +41,6 @@ export const Textarea = ({
           }
         }}
       />
-      {/* <ModelPicker
-        setSelectedModel={setSelectedModel}
-        selectedModel={selectedModel}
-      /> */}
 
       {status === "streaming" || status === "submitted" ? (
         <button
@@ -76,7 +71,7 @@ export const Textarea = ({
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className="absolute bottom-2 right-2 rounded-full bg-black p-2 transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-300 disabled:dark:bg-zinc-700 dark:disabled:opacity-80"
+          className="absolute bottom-2 right-2 rounded-full bg-[#ff6154] p-2 transition-colors hover:bg-[#ff6154]/80 disabled:cursor-not-allowed disabled:bg-[#ff6154]/50 dark:disabled:bg-[#ff6154]/30"
         >
           <ArrowUp className="h-4 w-4 text-white" />
         </button>

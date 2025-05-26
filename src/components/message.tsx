@@ -62,14 +62,16 @@ export function ReasoningMessagePart({
     <div className="flex flex-col">
       {isReasoning ? (
         <div className="flex flex-row items-center gap-2">
-          <div className="text-sm font-medium">Reasoning</div>
-          <div className="animate-spin">
+          <div className="text-sm font-medium text-[#ff6154]">Reasoning</div>
+          <div className="animate-spin text-[#ff6154]">
             <SpinnerIcon />
           </div>
         </div>
       ) : (
         <div className="flex flex-row items-center gap-2">
-          <div className="text-sm font-medium">Reasoned for a few seconds</div>
+          <div className="text-sm font-medium text-[#ff6154]">
+            Reasoned for a few seconds
+          </div>
           <button
             className={cn(
               "cursor-pointer rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800",
@@ -82,9 +84,9 @@ export function ReasoningMessagePart({
             }}
           >
             {isExpanded ? (
-              <ChevronDownIcon className="h-4 w-4" />
+              <ChevronDownIcon className="h-4 w-4 text-[#ff6154]" />
             ) : (
-              <ChevronUpIcon className="h-4 w-4" />
+              <ChevronUpIcon className="h-4 w-4 text-[#ff6154]" />
             )}
           </button>
         </div>
@@ -142,9 +144,7 @@ const PurePreviewMessage = ({
         >
           {message.role === "assistant" && (
             <div className="ring-border flex size-8 shrink-0 items-center justify-center rounded-full bg-background ring-1">
-              <div className="">
-                <SparklesIcon size={14} />
-              </div>
+              <SparklesIcon size={14} className="text-[#ff6154]" />
             </div>
           )}
 
@@ -181,7 +181,7 @@ const PurePreviewMessage = ({
                     >
                       <div className="flex flex-1 items-center justify-center">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-50 dark:bg-zinc-800">
-                          <PocketKnife className="h-4 w-4" />
+                          <PocketKnife className="h-4 w-4 text-[#ff6154]" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-baseline gap-2 font-medium">
@@ -194,7 +194,7 @@ const PurePreviewMessage = ({
                         <div className="flex h-5 w-5 items-center justify-center">
                           {state === "call" ? (
                             isLatestMessage && status !== "ready" ? (
-                              <Loader2 className="h-4 w-4 animate-spin text-zinc-500" />
+                              <Loader2 className="h-4 w-4 animate-spin text-[#ff6154]" />
                             ) : (
                               <StopCircle className="h-4 w-4 text-red-500" />
                             )
@@ -234,7 +234,6 @@ export const Message = memo(PurePreviewMessage, (prevProps, nextProps) => {
   if (prevProps.status !== nextProps.status) return false;
   if (prevProps.message.annotations !== nextProps.message.annotations)
     return false;
-  // if (prevProps.message.content !== nextProps.message.content) return false;
   if (!equal(prevProps.message.parts, nextProps.message.parts)) return false;
 
   return true;
