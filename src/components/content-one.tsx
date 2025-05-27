@@ -15,7 +15,7 @@ export default function ContentSection() {
   return (
     <section>
       <div className="bg-muted/50 py-24">
-        <div className="mx-auto w-full max-w-5xl px-6">
+        <div className="mx-auto w-full max-w-3xl px-6">
           <div>
             <span style={{ color: "#ff6154" }}>AI Relationship Coach</span>
             <h2 className="mt-4 text-4xl font-semibold text-foreground">

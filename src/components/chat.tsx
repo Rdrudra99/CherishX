@@ -1,6 +1,6 @@
 "use client";
 import { useChat } from "@ai-sdk/react";
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Textarea } from "./textarea";
 import {
   Dialog,
@@ -14,32 +14,143 @@ import {
 } from "@/components/ui/dialog";
 import { Messages } from "./messages";
 import { toast } from "sonner";
-import { ChatHeader } from "./chatHeader";
 import { ProjectOverview } from "./project-overview";
 import { defaultModel, modelID } from "../ai/providers";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { CircleAlertIcon, Heart, MessageCircle, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { Message } from "ai";
+
+// Constants
+const STORAGE_KEY = "cherish-chat-messages";
+
+// Utility functions for localStorage operations
+const storageUtils = {
+  save: (messages: Message[]): void => {
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+      }
+    } catch (error) {
+      console.error("Failed to save messages to localStorage:", error);
+    }
+  },
+
+  load: (): Message[] => {
+    try {
+      if (typeof window !== "undefined") {
+        const savedMessages = localStorage.getItem(STORAGE_KEY);
+        if (savedMessages) {
+          const parsed = JSON.parse(savedMessages);
+          // Validate the data structure
+          if (Array.isArray(parsed)) {
+            return parsed.filter(
+              (msg) =>
+                msg &&
+                typeof msg === "object" &&
+                "id" in msg &&
+                "content" in msg &&
+                "role" in msg,
+            );
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load messages from localStorage:", error);
+      // Clear corrupted data
+      storageUtils.clear();
+    }
+    return [];
+  },
+
+  clear: (): void => {
+    try {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    } catch (error) {
+      console.error("Failed to clear localStorage:", error);
+    }
+  },
+};
 
 export default function Chat() {
   const { isSignedIn, user } = useUser();
   const [selectedModel, setSelectedModel] = useState<modelID>(defaultModel);
-  const { messages, input, handleInputChange, handleSubmit, status, stop } =
-    useChat({
-      maxSteps: 5,
-      body: {
-        selectedModel,
-      },
-      onError: (error) => {
-        toast.error(
-          error.message.length > 0
-            ? error.message
-            : "An error occurred, please try again later.",
-          { position: "top-center", richColors: true },
-        );
-      },
-    });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Load initial messages only once
+  const [initialMessages] = useState<Message[]>(() => storageUtils.load());
+
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    status,
+    stop,
+    setMessages,
+  } = useChat({
+    initialMessages: initialMessages,
+    maxSteps: 5,
+    body: {
+      selectedModel,
+    },
+    onError: (error) => {
+      toast.error(
+        error.message.length > 0
+          ? error.message
+          : "An error occurred, please try again later.",
+        { position: "top-center", richColors: true },
+      );
+    },
+  });
+
+  // Save messages to localStorage whenever they change
+  // Use a separate effect with proper dependency management
+  useEffect(() => {
+    // Only save if we have messages and they're different from initial
+    if (messages.length > 0) {
+      // Debounce the save operation to prevent too frequent writes
+      const timeoutId = setTimeout(() => {
+        storageUtils.save(messages);
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [messages]);
+
+  // Clear chat history function
+  const clearChatHistory = useCallback(() => {
+    try {
+      // Clear localStorage first
+      storageUtils.clear();
+
+      // Reset messages state
+      setMessages([]);
+
+      // Close dialog
+      setIsDialogOpen(false);
+
+      // Show success message
+      toast.success("Chat history cleared successfully", {
+        position: "top-center",
+        richColors: true,
+      });
+    } catch (error) {
+      console.error("Failed to clear chat history:", error);
+      toast.error("Failed to clear chat history", {
+        position: "top-center",
+        richColors: true,
+      });
+    }
+  }, [setMessages]);
+
+  // Handle dialog state
+  const handleDialogOpenChange = useCallback((open: boolean) => {
+    setIsDialogOpen(open);
+  }, []);
 
   const isLoading = status === "streaming" || status === "submitted";
 
@@ -70,9 +181,13 @@ export default function Chat() {
           {/* Navigation & User Section */}
           <div className="flex items-center gap-2 sm:gap-4">
             {/* Clear Chats Dialog */}
-            <Dialog>
+            <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
               <DialogTrigger asChild>
-                <button className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#ff6154]/10 to-[#ff8a7a]/10 px-2 py-1.5 text-xs font-medium text-zinc-700 transition-all hover:scale-105 hover:from-[#ff6154]/20 hover:to-[#ff8a7a]/20 dark:text-zinc-300 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm">
+                <button
+                  className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#ff6154]/10 to-[#ff8a7a]/10 px-2 py-1.5 text-xs font-medium text-zinc-700 transition-all hover:scale-105 hover:from-[#ff6154]/20 hover:to-[#ff8a7a]/20 disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-300 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm"
+                  title="Clear chat history from local storage"
+                  disabled={messages.length === 0}
+                >
                   <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   <span className="hidden sm:inline">Clear Chats</span>
                 </button>
@@ -91,7 +206,13 @@ export default function Chat() {
                     </DialogTitle>
                     <DialogDescription className="text-center text-sm text-zinc-600 dark:text-zinc-400">
                       This action cannot be undone. All your chat history will
-                      be permanently deleted.
+                      be permanently deleted from your browser's local storage.
+                      {messages.length > 0 && (
+                        <span className="mt-2 block font-medium">
+                          {messages.length} message
+                          {messages.length !== 1 ? "s" : ""} will be deleted.
+                        </span>
+                      )}
                     </DialogDescription>
                   </DialogHeader>
                 </div>
@@ -107,7 +228,8 @@ export default function Chat() {
                   </DialogClose>
                   <Button
                     type="button"
-                    className="flex-1 bg-red-600 text-white hover:bg-red-700"
+                    className="flex-1 bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    onClick={clearChatHistory}
                   >
                     Clear All Chats
                   </Button>
