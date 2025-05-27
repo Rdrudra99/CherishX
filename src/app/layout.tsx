@@ -4,10 +4,6 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
-export const viewport: Viewport = {
-  themeColor: "#a855f7", // Matches your manifest's purple theme
-};
-
 export const metadata: Metadata = {
   title: "CherishX | Your AI Love Partner",
   description:
@@ -59,7 +55,7 @@ export default function RootLayout({
           <link rel="manifest" href="/manifest.json" />
           <link rel="apple-touch-icon" href="/icon.png" />
           {/* Removing this as it's now handled by the viewport export */}
-          {/* <meta name="theme-color" content="#e0c8fd" /> */}
+          <meta name="theme-color" content="#ff6154" />
 
           <meta property="og:title" content="Nextjs App" />
           <meta name="twitter:title" content="Nextjs App" />
