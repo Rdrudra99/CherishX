@@ -45,7 +45,7 @@ export const HeroHeader = () => {
             {/* Action Buttons */}
             <div className="flex items-center gap-3">
               {/* Sign In Button - Shows when not scrolled */}
-              <SignInButton mode="modal">
+              {/* <SignInButton mode="modal">
                 <Button
                   variant="outline"
                   size="sm"
@@ -53,10 +53,10 @@ export const HeroHeader = () => {
                 >
                   Sign In
                 </Button>
-              </SignInButton>
+              </SignInButton> */}
 
               {/* Sign Up Button - Shows when not scrolled */}
-              <SignUpButton mode="modal">
+              {/* <SignUpButton mode="modal">
                 <Button
                   size="sm"
                   className={cn(
@@ -66,16 +66,13 @@ export const HeroHeader = () => {
                 >
                   Sign Up
                 </Button>
-              </SignUpButton>
+              </SignUpButton> */}
 
               {/* Get Started Button - Shows when scrolled */}
               <SignUpButton mode="modal">
                 <Button
                   size="sm"
-                  className={cn(
-                    isScrolled ? "lg:inline-flex" : "hidden",
-                    "rounded-full bg-[#ff6154]",
-                  )}
+                  className={cn("rounded-full bg-[#ff6154] lg:inline-flex")}
                 >
                   Get Started
                 </Button>
